@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .wrapper {
+            padding: 20px 4% 20px;
+        }
+
+
+        .table {
+            margin: 0;
+            table-layout: fixed;
+            border-radius: 6px;
+        }
+
+        .more {
+            padding: 0 8px;
+        }
+        .more:hover {
+            color: red;
+            cursor: pointer;
+        }
+
+        td {
+            -ms-word-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        #chart1 {
+            height: 300px;
+        }
+        #chart2 {
+            height: 300px;
+        }
+        #close {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            font-size: 20px;
+        }
+        #content {
+            margin-top: 50px;
+        }
+        .modal {
+            background-color: #fff;
+            padding: 40px;
+        }
+       /* .modal table {
+            border-color: gray;
+            border-spacing: 2px;
+        }*/
+    </style>
+</head>
+<body >
+<div class="wrapper animated fadeInRight">
+    <!--第一个表格和饼状图-->
+    <div class="col-lg-6 col-md-12">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <table id="chart1_table" class="text-center table table-bordered table-condensed table-hover">
+                </table>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <div id="chart1">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--第二个表格和饼状图-->
+    <div class="col-lg-6 col-md-12">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <table id="chart2_table" class="text-center table table-bordered table-condensed table-hover">
+                </table>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <div id="chart2">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal">
+    <span id="close" class="glyphicon glyphicon-remove"></span>
+    <div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2">
+        <table class="text-center table table-bordered table-condensed table-hover">
+        </table>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="./js/echarts/echarts.js"></script>
+<script>
+    //将 res_slice从[{"直接访问": 555}]格式
+    // 转化为[{"value":555, "name":"直接访问"}]
+    function format(arr) {
+        return arr.map(function(elem, index) {
+            for(var key in elem) {
+                return {"name": key, "value":elem[key] }
+            }
+        })
+    }
+    //图表函数
+    function drawPie(id, res1, res2) {
+        var mychart = echarts.init(document.getElementById(id))
+        var option = {
+            title : {
+                text: '某站点用户访问来源',
+                subtext: '纯属虚构',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                legend: res1
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    data: res2
+                }
+            ]
+        };
+        mychart.setOption(option)
+        window.addEventListener('resize', mychart.resize)
+    }
+    //表格函数
+    function drawTable(res) {
+        var html = ""
+        res.forEach(function(elem, index) {
+            for(var key in elem) {
+                html += " <tr><td>"+key+"</td><td>"+elem[key]+"</td></tr>"
+            }
+        })
+        return "<tbody>"+html+"</tbody>"
+    }
+    //请求数据,并且缓存数据
+    function request(id,url) {
+        $.get(url, function(res) {
+            //0.缓存数据
+            var str = JSON.stringify(res)
+            localStorage.setItem(id, str)
+            //处理出两套数据
+            var legend = []
+            var legend_slice = []
+            var res_slice = []
+            //1.legend
+            var res_other = []
+            for(var i =0; i< res.length; i++) {
+                for(var key in res[i]) {
+                    legend.push(key)
+                }
+            }
+            //2.legend_slice
+            if(legend.length > 10) {
+                legend_slice = legend.slice(0,10)
+                legend_slice.pop()
+                legend_slice.push("其他")
+                $("#"+id+"_table").after('<p class="text-right"><span data-localStorage='+id+' class="more">more...</span></p>')
+                $('.more').on('click', function() {
+                    $('.modal').show()
+                    var item = $(this).attr("data-localStorage")
+                    var res = localStorage.getItem(item)
+                    $('.modal table').html(drawTable(JSON.parse(res)))
+                })
+
+            }else {
+                legend_slice = legend.slice(0)
+            }
+            //3.res_slice
+            if(res.length > 10) {
+                res_slice = res.slice(0, 9)
+                res_other = res.slice(9)
+                //计算其他的数值和
+                var sum = 0
+                for(var i=0; i<res_other.length; i++) {
+                    for(var key in res_other[i]) {
+                        sum += res_other[i][key]
+                    }
+                }
+                res_slice.pop()
+                res_slice.push({"其他":sum})
+            }else {
+                res_slice = res.slice(0)
+            }
+            //渲染图表
+            drawPie(id, legend_slice, format(res_slice))
+            //渲染表格
+            $("#"+id+"_table").html(drawTable(res_slice))
+        })
+    }
+    request("chart1","device1.json")
+    request("chart2","device2.json")
+    $("#close").on('click', function() {
+        $('.modal').hide()
+    })
+
+</script>
+</body>
+</html>
