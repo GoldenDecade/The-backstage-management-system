@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--360浏览器优先以webkit内核解析-->
+
+
+    <title> - 主页示例</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/echarts/echarts.js"></script>
+    <script src="./js/bootstrap-datetimepicker.js"></script>
+    <script src="./js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/i18next-latest.js"></script>
+    <script src="js/util.js"></script>
+
+    <style>
+        body {
+            margin:6% 20px 20px 20px;
+            position: relative;
+        }
+        .content{
+            width: 90%;
+            margin-left: 5%;
+            text-align: center;
+        }
+        .search {
+            text-align: center;
+            margin-top: 20px;
+            width: 70%;
+            margin-left: 15%;
+        }
+        .search {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .item {
+            margin-right: 80px;
+        }
+        label {
+            margin-right: 4px;
+            font-weight: 600;
+            font-size: 18px;
+            vertical-align: middle;
+            margin-bottom: 0;
+        }
+        #btn {
+            margin-left: 20px;
+        }
+        .box {
+            margin-left: 5%;
+            width: 90%;
+            height: 400px;
+            margin-top: 2%;
+        }
+
+    </style>
+</head>
+
+<body >
+
+<div class="content">
+    <form class="search form-inline">
+        <div class="form-group item">
+            <label data-i18n="startTime" for="startTime"></label><input id="startTime"  type="text" readonly class="startTime form-control" >
+        </div>
+        <div class="form-group">
+            <label data-i18n="endTime" for="endTime"></label><input id="endTime"  type="text" readonly class="endTime form-control" >
+        </div>
+        <button class="btn btn-primary" id="btn" data-i18n="search"></button>
+    </form>
+    <!--chart-->
+        <div class="box">
+            <div class="ibox-title" style="border-bottom:none;background:lightseagreen;">
+                <h5 data-i18n="report_user_24"></h5>
+            </div>
+            <div class="ibox-content" style="border-top:none;background: lightcyan;">
+                <div id="yesterday" style="height:317px;background:#fff">
+                </div>
+            </div>
+        </div>
+
+
+
+    <!--chart-->
+    <div class="box ">
+        <div class="ibox-title" style="border-bottom:none;background:peachpuff;">
+            <h5 data-i18n="report_user_title1"></h5>
+        </div>
+        <div class="ibox-content" style="border-top:none;background:cornsilk ;">
+            <div id="yesterday2" style="height:317px;background:#fff">
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+    <script>
+        var reqObj = {
+            ajax1: "data.json"
+        }
+        var lg = $('iframe',window.parent.document).attr('data-language');
+        language(lg)
+        function language(lg){
+            i18n.init({
+                lng: lg,
+                debug: true,
+                resGetPath: "./locales/__lng__/__ns__.json",
+            }, function () {
+                $("body").i18n();
+            });
+        }
+//修改图表标题
+        var chartTitle = {}
+        if(lg==="zh") {
+            chartTitle = {
+                "chart1": "图表1"
+            }
+        }else {
+            chartTitle = {
+                "chart1": "chart1"
+            }
+        }
+        $(".startTime").val(formatDate(new Date(),"yyyy-MM-dd"))
+        $(".endTime").val(formatDate(new Date(),"yyyy-MM-dd"))
+
+        //按时间查询
+        $(".startTime, .endTime").datetimepicker({
+            language: "zh-CN",
+            format: "yyyy-mm-dd",
+            autoclose: 1,
+            todayHighlight: 1,
+            todayBtn: "linked",
+            endDate: new Date(),
+            minView: 2
+        });
+
+
+        //第一个图
+        var  myChart = echarts.init(document.getElementById('yesterday'));
+        $.get(reqObj.ajax1).done(function(res) {
+            var option = {
+                title: {
+                    text: chartTitle.chart4,
+                    x: "center",
+                    top: "20",
+                    textStyle:{
+                        fontFamily: "YouYuan "
+                    }
+                },
+                grid: {
+                    top: 70,
+                    bottom: 20
+                },
+
+                xAxis: {
+                    data: res.dataAxis,
+                    axisLabel: {
+                        textStyle: {
+                            color: "#000"
+                        }
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#000"
+                        }
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: true
+                    },
+                    axisTick: {
+                        show: true
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#000"
+                        }
+                    }
+                },
+
+                series: [
+                    {
+                        type: 'bar',
+
+                        itemStyle: {
+                            normal: {
+                                "label": {
+                                    "show": true,
+                                    "position": "top",
+                                    textStyle: {
+                                        color: "#d31c6b"
+                                    }
+                                },
+                                color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 0, color: '#83bff6'},
+                                            {offset: 0.5, color: '#188df0'},
+                                            {offset: 1, color: '#188df0'}
+                                        ]
+                                )
+                            },
+                            emphasis: {
+                                color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 0, color: '#2378f7'},
+                                            {offset: 0.7, color: '#2378f7'},
+                                            {offset: 1, color: '#83bff6'}
+                                        ]
+                                )
+                            }
+                        },
+                        data: res.val
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener('resize', myChart.resize)
+        })
+            //第二个图
+        var  myChart2 = echarts.init(document.getElementById('yesterday2'));
+        $.get(reqObj.ajax1).done(function(res) {
+            console.log(res);
+            var option = {
+                title: {
+                    text: chartTitle.chart4,
+                    x: "center",
+                    top: "20",
+                    textStyle:{
+                        fontFamily: "YouYuan "
+                    }
+                },
+                grid: {
+                    top: 70,
+                    bottom: 20
+                },
+
+                xAxis: {
+                    data: res.dataAxis,
+                    axisLabel: {
+                        textStyle: {
+                            color: "#000"
+                        }
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#000"
+                        }
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: true
+                    },
+                    axisTick: {
+                        show: true
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#000"
+                        }
+                    }
+                },
+
+                series: [
+                    {
+                        type: 'bar',
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 0, color: '#83bff6'},
+                                            {offset: 0.5, color: '#188df0'},
+                                            {offset: 1, color: '#188df0'}
+                                        ]
+                                ),
+                                "label": {
+                                    "show": true,
+                                    "position": "top",
+                                    textStyle: {
+                                        color: "#d31c6b"
+                                    }
+                                }
+                            },
+                            emphasis: {
+                                color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 0, color: '#2378f7'},
+                                            {offset: 0.7, color: '#2378f7'},
+                                            {offset: 1, color: '#83bff6'}
+                                        ]
+                                )
+                            }
+                        },
+                        data: res.val
+                    }
+                ]
+            };
+
+            myChart2.setOption(option);
+            window.addEventListener('resize', myChart2.resize)
+        })
+
+     //提交用户选择的时间，请求数据并重绘图形
+        $('#btn').on('click',function() {
+            if(($(".startTime").val() > $(".endTime").val()) || ($(".startTime").val().length === 0)|| ($(".endTime").val().length === 0 ) ) {
+                return false;
+            }
+            $.post(reqObj.ajax1,{startTime:$(".startTime").val(), endTime: $(".endTime").val() }).done(function(res) {
+                myChart.setOption({
+                    xAxis: {
+                        data: res.dataAxis
+                    },
+                    "series" :[{
+                        "data":res.val
+                    }]
+                });
+                myChart2.setOption({
+                    xAxis: {
+                        data: res.dataAxis
+                    },
+                    "series" :[{
+                        "data":res.val
+                    }]
+                })
+            })
+
+        });
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "operation": "运营",
+  "overview":"主页",
+  "report":"分类",
+  "report_user":"用户",
+  "report_speaker":"speaker",
+  "report_scenarios":"场景",
+  "report_nlu":"nlu",
+  "report_device":"设备",
+  "geography":"地图",
+  "geography_china": "中国",
+  "geography_global": "全球",
+  "welcome": "欢迎",
+
+  "v1_user": "USER",
+  "v1_speaker": "SPEAKER",
+  "v1_nlu": "NLU",
+  "v1_hub": "HUB",
+  "v1_today": "今日访问量",
+  "v1_more": "更多详情...",
+
+  "china_user": "用户",
+  "china_speaker": "Speaker",
+  "china_nlu": "Nlu",
+
+  "startTime": "开始时间: ",
+  "endTime": "结束时间: ",
+  "search": "查询",
+
+  "UserCenter": "个人中心",
+  "User_modifyPsd": "修改密码",
+  "User_oldPsd": "请输入旧密码:",
+  "User_newPsd": "请输入新密码:",
+  "User_psdLength":"密码长度在6--18位",
+  "User_confirmPsd":"请重新输入新密码:",
+  "User_save": "保存",
+  "User_cancel": "取消",
+  "User_alias": "昵称 *",
+  "User_aliasLength":"昵称长度在2--8位",
+  "User_department":"部门",
+  "User_modify": "修改",
+  "User_position": "职位",
+  "User_link": "联系方式 *",
+  "User_email": "邮箱 *",
+  "User_required": "* 必填",
+
+  "report_user_24": "24小时内在线人数",
+  "report_user_title1": "一周内在线人数",
+
+  "psw_long":"密码过长",
+  "psw_short":"密码过短",
+  "psw_wrong":"密码不正确",
+  "psw_different":"密码不一致",
+  "psw_tpWrong":"密码不规范"
+
+}

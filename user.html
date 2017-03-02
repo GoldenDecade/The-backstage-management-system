@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <style>
+        .fix{
+            margin-top: 5px;
+             color: #46b8da;
+            border:1px solid red;
+        }
+        #fixpsw{
+            cursor: pointer;
+            display: inline-block;
+           margin-left: 20px;
+            color:#46b8da;
+        }
+        #alertPage{
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(129, 129, 129, 0.84);
+            z-index: 2;
+        }
+        #alertInner{
+            display:none;
+            position: absolute;
+            width: 50%;
+            height: 300px;
+            margin-left: 25%;
+            z-index: 10;
+            background-color: #fff;
+            border: 1px solid lightgrey;
+            border-radius: 20px;
+            box-shadow: 0 0 10px #000;
+        }
+        .psw{
+            width: 100%;
+            position: absolute;
+        }
+        .psw_text{
+            position: absolute;
+            width: 30%;
+            text-align: right;
+            line-height:34px;
+            display: inline-block;
+        }
+        .input_line{
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+        .psw_input{
+            display: inline-block;
+            width: 200px;
+        }
+        #oldpsdwarn,#psdwarn,#repsdwarn{
+            display: inline-block;
+            position: absolute;
+            line-height: 34px;
+            padding-left: 2px;
+            text-align: left;
+        }
+
+
+        .bt_save_psw{
+            display: inline-block;
+            width: 70px;
+            box-sizing: border-box;
+            margin-right: 44px;
+        }
+        .bt_cancle_psw{
+            display: inline-block;
+            margin-left: 10px;
+        }
+        #psw_result{
+            position: absolute;
+            display: inline-block;
+            margin-left: 10px;
+            line-height:30px;
+            color: rgba(255,82,0,0.88);
+        }
+
+
+        h2{
+           margin-left:30px;display: inline-block;
+        }
+
+        .basic_save,.basic_cancle{
+            width:100px;
+            display: inline-block;
+        }
+
+       #namewarn, #emailwarn, #telwarn {
+          display: inline-block;
+           line-height: 34px;
+       }
+
+        .two_bt {
+            width: 40%;
+            height:30px;
+            margin-left:26%;
+            text-align: center;
+           margin-bottom: 15px;
+        }
+        #basic_result {
+            display: inline-block;
+            position: absolute;
+            line-height: 30px;
+            color: red;
+        }
+        .warn_span {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 2px;
+            color: rgba(255,0,0,0.6);
+        }
+        ._i{
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+<div class="userModal animated">
+    <div class="userModalBox">
+        <div class="page-header">
+            <h2 data-i18n="UserCenter">个人中心</h2><h6 id="fixpsw" data-i18n="User_modifyPsd">修改密码</h6>
+        </div>
+        <div id="alertPage"></div>
+        <div id="alertInner">
+            <div class="psw" style=" margin-top: 30px;">
+                <label class="psw_text" for="oldpsd" data-i18n="User_oldPsd">请输入旧密码</label>
+                <div class="input_line">
+                  <input type="password" class="psw_input form-control "  name="oldpsd" id="oldpsd" required/>&nbsp <span  id="oldpsdwarn"></span>
+                </div>
+            </div>
+            <div  class="psw" style="margin-top: 90px">
+                <label class="psw_text" for="psd" data-i18n="User_newPsd">请输入新密码</label>
+                <div class="input_line">
+                    <input type="password" class="psw_input form-control" name="psd" id="psd" required/>&nbsp <span id="psdwarn"></span>
+                    <p data-i18n="User_psdLength" style="font-size: 12px;color: rgba(255, 165, 0, 0.94);"></p>
+                </div>
+            </div>
+            <div  class="psw" style="margin-top: 165px">
+                <label class="psw_text " for="repsd"  data-i18n="User_confirmPsd">请重新输入新密码</label>
+                <div class="input_line">
+                <input type="password" class="psw_input form-control" name="repsd" id="repsd" required/>&nbsp
+                    <span id="repsdwarn" style="color:rgba(255,82,0,0.88);"></span>
+                </div>
+            </div>
+            <div class="psw" style="margin-top: 220px;text-align: center;">
+            <button class="bt_save_psw btn-primary btn" id="psw_save" data-i18n="User_save">保存</button>
+            <button class="bt_cancle_psw btn-primary btn" id="psw_cancle" data-i18n="User_cancel">取消</button>
+                <div id="psw_result"></div>
+                </div>
+
+        </div>
+        <form id="userForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userName" data-i18n="User_alias">昵称 *</label><span id="namewarn"></span>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="userName" id="userName" required/>
+                    <p data-i18n="User_aliasLength" style="font-size: 12px;color:rgba(255, 165, 0, 0.94);"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userBumen" data-i18n="User_department">部门</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="userBumen" id="userBumen" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userJob" data-i18n="User_position">职位</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="userJob" id="userJob" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userTel" data-i18n="User_Tel">联系方式 *</label><span id="telwarn"></span>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="userTel" id="userTel" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userEmail" data-i18n="User_email">邮箱 *</label><span id="emailwarn"></span>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="userEmail" id="userEmail" required/>
+                </div>
+            </div>
+        </form>
+        <div class="two_bt">
+            <div class=" basic_save" >
+                <button id="userBtn" class="btn btn-primary" data-i18n="User_save">保存</button>
+            </div>
+            <div class="basic_cancle"  style="margin-left:36px;">
+                <button id="cancleBtn"  class="btn btn-primary" data-i18n="User_cancel">取消</button>
+            </div>
+            <div id="basic_result"></div>
+        </div>
+
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/i18next-latest.js"></script>
+<script src="js/util.js"></script>
+<!--<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>-->
+
+
+
+<script>
+
+    var psw_long;
+    var psw_short;
+    var psw_wrong;
+    var psw_different;
+    var psw_tpWrong;
+
+    var psw_result_succ;
+    var psw_result_flse;
+
+    var email_type;
+    var tel_type;
+    var input_psw;
+    var name_long;
+    var name_short;
+        console.log(lg);
+        if(lg=="zh"){  //如果是中文
+            psw_long="密码过长";
+            psw_short="密码过短";
+            psw_wrong="密码错误";
+            psw_different="密码不一致,请重新输入";
+            psw_result_flse="提交失败";
+            email_type="邮箱格式错误";
+            tel_type="不是合法手机号"
+            input_psw=" 请先输入密码";
+            name_long="昵称过长";
+            name_short="昵称过短";
+        }else if(lg=="en"){
+        //    $(".psw_text").css("font-size","12px");
+            psw_long="password is too long";
+            psw_short="password is too short";
+            psw_wrong="password is wrong";
+            psw_different="password is different";
+            psw_tpWrong="password is not standardized";
+            psw_result_flse="Submit Failure";
+            email_type="Not a valid email address";
+            tel_type="Not a valid phone number";
+            input_psw="input password first";
+            name_short="name is too short";
+            name_long="name is too long";
+        }
+
+
+
+
+    var nameflag=true;
+    var telflag=true;
+    var emailflag=true;
+
+    var nowUser;
+    var tel;
+    var email;
+    var psw;
+    var job;
+    var bumen;
+    $.post("data0.json", function(res) {
+        nowUser=res.alias;
+        tel=res.tel;
+        email=res.email;
+        psw=res.psw;
+        job=res.job;
+        bumen=res.bumen;
+        //表单数据初始化
+        $("#userName").val(nowUser);
+        $("#userTel").val(tel);
+        $("#userEmail").val(email);
+        $("#userJob").val(job);
+        $("#userBumen").val(bumen);
+
+    })
+
+
+    $("input").focus(function(e){  //当输入框获得焦点时，结果警告消失
+        e = window.event || e;
+        var obj = $(e.srcElement || e.target);
+        $("#psw_result").html("");
+        $("#basic_result").html("");
+        if (obj.attr('id') == 'oldpsd') {
+            $("#oldpsdwarn").html("");
+        } if (obj.attr('id') == 'psd') {
+            $("#psdwarn").html("");
+        }
+        if (obj.attr('id') == 'repsd') {
+            $("#repsdwarn").html("");
+        }
+    });
+
+    $(".form-control").bind("input propertychange",function(){
+        $("#userBtn").removeClass("btn-disabled").addClass("btn-primary");
+    });
+
+    $(function(){
+//表单验证
+        //验证昵称
+        $("#userName").bind("input propertychange",function(){
+            $("#result").html("");
+            if($(this).val().length>8){
+                $("#namewarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+name_long+"</span>");
+                nameflag=false;
+            }else if($(this).val().length>=2 && $(this).val().length<=8) {
+                $("#namewarn").html("");
+                nameflag=true;
+            }
+        });
+        //昵称栏失去焦点时的事件
+        $("#userName").blur(function(){
+            if($(this).val().length<2){
+                $("#namewarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+name_short+"</span>");
+                nameflag=false;
+            }else if($(this).val().length>=2 && $(this).val().length<=8) {
+                nameflag=true;
+            }else {
+                $("#namewarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+name_long+"</span>");
+            }
+        });
+        //验证邮箱格式
+        $("#userEmail").blur(function(){
+            var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
+            var str=$(this).val();
+            if(re.test(str)){
+                $("#emailwarn").html("");
+                emailflag=true;
+            }else{
+                $("#emailwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+email_type+"</span>");
+                emailflag=false;
+            }
+        });
+
+        //验证手机格式
+        $("#userTel").blur(function(){
+            var re =/^1\d{10}$/;
+            var str=$(this).val();
+            if(re.test(str)){
+                $("#telwarn").html("");
+                telflag=true;
+            }else{
+                $("#telwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+tel_type+"</span>");
+                telflag=false;
+            }
+        });
+
+
+
+//密码
+        //修改密码点击事件
+        $("#fixpsw").bind("click",function(){
+            //初始化弹出层
+            $("#oldpsdwarn,#psdwarn,#repsdwarn,#psw_result").html("");
+            $("#repsd").attr("disabled",false);
+            $("#oldpsd,#psd,#repsd").val("");
+            $("#alertInner, #alertPage").css("display","block");
+        });
+
+        //输入旧密码
+        $("#oldpsd").bind("input propertychange",function(){})
+        //旧密码失去焦点事件
+        $("#oldpsd").blur(function(){
+            if(parseInt($(this).val())==psw){  //密码正确
+                oldPSWflag=true;
+            }else if($(this).val().length<1){
+                $("#oldpsdwarn").html("");
+            }else{
+                $("#oldpsdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+psw_wrong+"</span>");
+            }
+        });
+
+
+        //新密码获得焦点事件
+        $("#psd").focus(function(){
+
+        });
+        //新密码改变事件
+        $("#psd").bind("input propertychange",function(){
+            $("#repsdwarn").html("");
+            if($(this).val().length>18){
+                $("#psdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span  class='warn_span'>"+psw_long+"</span>");
+            }else if($(this).val().length<1){
+                $("#repsdwarn").html("");
+                $("#repsd").val("")
+            }else{
+                $("#psdwarn").html("");
+            }
+        });
+        //新密码栏失去焦点时的事件
+        $("#psd").blur(function(){
+            if($("#repsd").val().length>0){   //重置密码不为空
+                if($(this).val().length<6 && $(this).val().length>0){   //新密码不合格
+                    $("#psdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span  class='warn_span'>"+psw_short+"<span>");
+                    $("#repsdwarn").html("");
+                    $("#repsd").val("");
+                }else if($(this).val().length>18){
+                    $("#repsdwarn").html("");
+                } else{                      //新密码合格
+                    if($("#repsd").val().length>=6 && $("#repsd").val().length<=18){   //重置密码合乎规范
+                        if($(this).val()!= $("#repsd").val()){
+                            $("#repsdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span  class='warn_span'>"+psw_different+"</span>");
+                        }
+                    }
+                }
+            }else{  //重置密码为空
+                if($(this).val().length<6 && $(this).val().length>0){
+                    $("#psdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span  class='warn_span'>"+psw_short+"<span>");
+                }else if($(this).val().length>18){
+                    $("#psdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span  class='warn_span'>"+psw_long+"</span>");
+                }else{
+                    $("#psdwarn").html("");
+                }
+            }
+
+        });
+
+
+
+        //验证密码栏获得焦点事件
+        $("#repsd").focus(function(){
+            if($("#psd").val().length<1){
+                $("#repsdwarn").html(input_psw);
+            }
+
+        });
+        //验证密码栏失去焦点时的事件
+        $("#repsd").blur(function(){
+            if($("#psd").val().length>0){  //如果密码栏不为空
+                if($("#psd").val().length<=18 && $("#psd").val().length>=6){  //并且密码合乎规范
+                    if($(this).val()!= $("#psd").val()){    //如果密码不一致
+                        $("#repsdwarn").html("<i class='wrong glyphicon glyphicon-remove _i' style='color: red;'></i><span class='warn_span'>"+psw_different+"</span>");
+                    }
+                }
+                else{    // 如果密码栏不为空,且密码不规范
+                    $("#repsdwarn").html("");
+                }
+
+            }else{   //如果密码栏为空
+                $("#repsdwarn").html("");
+                $(this).val("")
+            }
+        });
+
+
+            //保存和取消密码事件   div
+        $("#psw_save").bind("click",function(){
+            var obj = {
+                "oldpsw":psw,
+                "newpsw":$("#psd").val(),
+                "repsw":$("#repsd").val()
+            };
+            if($("#oldpsd").val()==psw  && $("#psd").val()==$("#repsd").val() &&  $("#psd").val().length>=6 && $("#psd").val().length<=18
+                    && $("#psd").val()!="" &&$("#repsd").val()!=""){   //验证成功，再去提交数据
+
+                $.post("form.json",obj, function(res,status) {
+                    if(res.success) {
+                        parent.location.reload();
+                    }
+                })
+            }else{    //不成功就按钮置灰，不可点击
+                //   $("#userBtn").removeClass("btn-primary").addClass("btn-disabled");
+                $("#psw_result").html(psw_result_flse);
+            }
+
+        });
+        $("#psw_cancle").bind("click",function(){
+            $("#alertInner, #alertPage").css("display","none");
+        });
+
+
+
+
+        //个人中心保存按钮
+        $("#userBtn").on('click', function() {
+            console.log(nameflag+"..."+telflag+"..."+emailflag);
+            var arr = $("#userForm").serialize().split("&");
+            var obj = {};
+            arr.forEach(function(elem, index) {
+                var smallArr = elem.split("=");
+                var key = smallArr[0];
+                var val = smallArr[1];
+                obj[key] = val;
+            });
+
+            console.log(obj);
+
+            //如果信息没修改，按钮置灰
+            if($("#userName").val()==nowUser && $("#userTel").val()==tel &&$("#userEmail").val()==email
+                    && $("#userBumen").val()==bumen &&$("#userJob").val()==job){
+                console.log("信息没改变")
+                $("#userBtn").removeClass("btn-primary").addClass("btn-disabled");
+            }
+           else if(nameflag && telflag &&emailflag){   //基本信息保存...
+                    //如果信息没修改
+                 $.post("form.json",obj, function(res,status) {
+                     if(res.success) {
+                         parent.location.reload();
+                     }
+                 })
+            }else{    //不成功就按钮置灰，不可点击
+                //            按钮置灰
+                //   $("#userBtn").removeClass("btn-primary").addClass("btn-disabled");
+                $("#basic_result").html(psw_result_flse);
+            }
+
+        });
+
+        //取消更改个人中心
+        $("#cancleBtn").on('click', function(){
+            parent.location.reload();
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/dataTable.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+        /*自定义单元格宽度*/
+        .display > thead > tr > th,
+        .display > tbody > tr > th,
+        .display > tfoot > tr > th,
+        .display > thead > tr > td,
+        .display > tbody > tr > td,
+        .display > tfoot > tr > td {
+            max-width: 90px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+    </style>
+</head>
+<body>
+<table  class="display"
+        cellspacing="0"
+        width="100%"
+        id="nlulist">
+    <thead>
+    <tr>
+        <th>_id</th>
+        <th>gadget_id</th>
+        <th>user_id</th>
+        <th>actor</th>
+        <th>text</th>
+        <th>url</th>
+        <th>nlu_result</th>
+        <th>dispatcher</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/dataTable.js"></script>
+<script>
+    $(document).ready(function() {
+        var reqObj = {
+            ajax1: "nlu.json"
+        }
+
+        $('#nlulist').DataTable({
+            responsive: true,
+            ordering: true,
+            info: true,
+            searching: true,
+            lengthChange: false,
+            scrollX:true,
+            iDisplayLength: 16,//设置一页显示多少行
+            columns:[
+                {data: '_id', defaultContent:""},
+                {data: 'gadget_id', defaultContent:""},
+                {data: 'user_id', defaultContent:""},
+                {data: 'actor', defaultContent:""},
+                {data: 'text', defaultContent:""},
+                {data: 'url', defaultContent:""},
+                {data: 'nlu_result', defaultContent:""},
+                {data: 'dispatcher', defaultContent:""}
+            ],
+            deferRender: true,
+            processing: true,
+            ajax: {
+                url: reqObj.ajax1,
+                data: function(res) {
+
+                }
+            }
+        });
+        //设置title
+        $('#nlulist').on( 'draw.dt', function () {
+            var maxWidth = 130;
+            $("td").each(function(index,item) {
+                if($(item).width() > maxWidth) {
+                    $(item).attr('title', $(item).html())
+                }
+            })
+        } );
+    } );
+
+
+</script>
+</body>
+</html>

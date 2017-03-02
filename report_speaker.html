@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
+
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap-datetimepicker.js"></script>
+    <script src="./js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="./js/echarts/echarts.js"></script>
+    <script src="js/i18next-latest.js"></script>
+    <script src="js/util.js"></script>
+    <style>
+        body {
+            margin:6% 20px 20px 20px;
+            position: relative;
+        }
+        .search {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .item {
+            margin-right: 80px;
+        }
+        label {
+            margin-right: 4px;
+            font-weight: 600;
+            font-size: 18px;
+            vertical-align: middle;
+            margin-bottom: 0;
+        }
+        #btn {
+            margin-left: 20px;
+        }
+        #box {
+            margin-left: 10%;
+            width: 80%;
+            height: 400px;
+            margin-top: 2%;
+        }
+        #box2 {
+            margin-left: 10%;
+            width: 80%;
+            height: 400px;
+            margin-top:5%;
+            margin-bottom: 5%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="content">
+
+    <!--search-->
+    <form class="search form-inline">
+        <div class="form-group item">
+            <label data-i18n="startTime" for="startTime"></label><input id="startTime"  type="text" readonly class="startTime form-control" >
+        </div>
+        <div class="form-group">
+            <label data-i18n="endTime" for="endTime"></label><input id="endTime"  type="text" readonly class="endTime form-control" >
+        </div>
+        <button class="btn btn-primary" id="btn" data-i18n="search">查询</button>
+    </form>
+
+    <!--chart-->
+    <div id="box"></div>
+    <div id="box2"></div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    var reqObj = {
+        ajax1: "data2.json"
+    }
+
+    var lg = $('iframe',window.parent.document).attr('data-language');
+    language(lg)
+    function language(lg){
+        i18n.init({
+            lng: lg,
+            debug: true,
+            resGetPath: "./locales/__lng__/__ns__.json",
+        }, function () {
+            $("body").i18n();
+        });
+    }
+
+    var chartTitle = {}
+    if(lg==="zh") {
+        chartTitle = {
+            "chart1": "图表1"
+        }
+    }else {
+        chartTitle = {
+            "chart1": "chart1"
+        }
+    }
+    $(".startTime").val(formatDate(new Date(),"yyyy-MM-dd"))
+    $(".endTime").val(formatDate(new Date(),"yyyy-MM-dd"))
+
+
+    $(".startTime, .endTime").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy-mm-dd",
+        autoclose: 1,
+        todayHighlight: 1,
+        todayBtn: "linked",
+        endDate: new Date(),
+        minView: 2
+    });
+
+
+
+
+
+    //    折线图
+    var mychart = echarts.init($("#box")[0]);
+    var option = {
+        backgroundColor: "#344b58",
+        "title": {
+            "text": chartTitle.chart1,
+            x: "center",
+            y: "20",
+            textStyle: {
+                color: '#fff',
+                fontSize: '22',
+                fontFamily: "Times New Roman,Georgia,Serif"
+            }
+        },
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "shadow",
+                textStyle: {
+                    color: "#fff"
+                }
+            }
+        },
+        "grid": {
+            "borderWidth": 0,
+            "top": 110,
+            "bottom": 95,
+            left: 90,
+            textStyle: {
+                color: "#fff"
+            }
+        },
+        "legend": {
+            x: '4%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c'
+            },
+            "data": ['user']
+        },
+
+
+        "calculable": true,
+        "xAxis": [{
+            "type": "category",
+            "axisLine": {
+                lineStyle: {
+                    color: '#90979c'
+                }
+            },
+            "splitLine": {
+                "show": false
+            },
+            "axisTick": {
+                "show": false
+            },
+            "splitArea": {
+                "show": false
+            },
+            "axisLabel": {
+                "interval": 0
+
+            }
+//                    "data": xData,
+        }],
+        "yAxis": [{
+            "type": "value",
+            "splitLine": {
+                "show": false
+            },
+            "axisLine": {
+                lineStyle: {
+                    color: '#90979c'
+                }
+            },
+            "axisTick": {
+                "show": false
+            },
+            "axisLabel": {
+                "interval": 0
+
+            },
+            "splitArea": {
+                "show": false
+            }
+
+        }],
+        "dataZoom": [
+            {
+                "show": true,
+                "height": 30,
+                "xAxisIndex": [
+                    0
+                ],
+                bottom: 30,
+                "start": 10,
+                "end": 80,
+                handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                handleSize: '110%',
+                handleStyle:{
+                    color:"#d3dee5"
+
+                },
+                textStyle:{
+                    color:"#fff"},
+                borderColor:"#90979c"
+
+
+            }, {
+                "type": "inside",
+                "show": true,
+                "height": 15,
+                "start": 1,
+                "end": 35
+            }],
+        "series": [
+            {
+                "name": "user",
+                "type": "bar",
+                "stack": "总量",
+                "barMaxWidth": 35,
+                "barGap": "10%",
+                "itemStyle": {
+                    "normal": {
+                        "color": "rgba(255,144,128,1)",
+                        "label": {
+                            "show": true,
+                            "textStyle": {
+                                "color": "#fff"
+                            },
+                            "position": "insideTop",
+                            formatter: function(p) {
+                                return p.value > 0 ? (p.value) : '';
+                            }
+                        }
+                    }
+                }
+                //"data": [709, 1917, 2455, 2610, 1719, 1433, 1544, 3285, 5208, 3372, 2484, 4078]
+            }
+        ]
+    }
+    mychart.setOption(option);
+
+
+
+    //    第二个图
+    var myChart2 = echarts.init($("#box2")[0]);
+    var option2 = {
+        backgroundColor: "#344b58",
+        "title": {
+            "text": "第二个图",
+            x: "center",
+            y: "20",
+            textStyle: {
+                color: '#fff',
+                fontSize: '22',
+                fontFamily: "Times New Roman,Georgia,Serif"
+            }
+        },
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "shadow",
+                textStyle: {
+                    color: "#fff"
+                }
+            }
+        },
+        "grid": {
+            "borderWidth": 0,
+            "top": 110,
+            "bottom": 95,
+            left: 90,
+            textStyle: {
+                color: "#fff"
+            }
+        },
+        "legend": {
+            x: '4%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c'
+            },
+            "data": ['user']
+        },
+
+
+        "calculable": true,
+        "xAxis": [{
+            "type": "category",
+            "axisLine": {
+                lineStyle: {
+                    color: '#90979c'
+                }
+            },
+            "splitLine": {
+                "show": false
+            },
+            "axisTick": {
+                "show": false
+            },
+            "splitArea": {
+                "show": false
+            },
+            "axisLabel": {
+                "interval": 0
+
+            }
+//                    "data": xData,
+        }],
+        "yAxis": [{
+            "type": "value",
+            "splitLine": {
+                "show": false
+            },
+            "axisLine": {
+                lineStyle: {
+                    color: '#90979c'
+                }
+            },
+            "axisTick": {
+                "show": false
+            },
+            "axisLabel": {
+                "interval": 0
+
+            },
+            "splitArea": {
+                "show": false
+            }
+
+        }],
+        "dataZoom": [
+            {
+                "show": true,
+                "height": 30,
+                "xAxisIndex": [
+                    0
+                ],
+                bottom: 30,
+                "start": 10,
+                "end": 80,
+                handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                handleSize: '110%',
+                handleStyle:{
+                    color:"#d3dee5"
+
+                },
+                textStyle:{
+                    color:"#fff"},
+                borderColor:"#90979c"
+
+
+            }, {
+                "type": "inside",
+                "show": true,
+                "height": 15,
+                "start": 1,
+                "end": 35
+            }],
+        "series": [
+            {
+                "name": "user",
+                "type": "bar",
+                "stack": "总量",
+                "barMaxWidth": 35,
+                "barGap": "10%",
+                "itemStyle": {
+                    "normal": {
+                        "color": "rgba(255,144,128,1)",
+                        "label": {
+                            "show": true,
+                            "textStyle": {
+                                "color": "#fff"
+                            },
+                            "position": "insideTop",
+                            formatter: function(p) {
+                                return p.value > 0 ? (p.value) : '';
+                            }
+                        }
+                    }
+                }
+                //"data": [709, 1917, 2455, 2610, 1719, 1433, 1544, 3285, 5208, 3372, 2484, 4078]
+            }
+        ]
+    }
+
+
+    myChart2.setOption(option2);
+    // request
+    $.get(reqObj.ajax1).done(function(res) {
+        mychart.setOption({
+            "xAxis": [{
+                "data": res.xdata
+            }],
+            "series": [
+                {"data":res.nlu}
+            ]
+        });
+        myChart2.setOption({
+            "xAxis": [{
+                "data": res.xdata
+            }],
+            "series": [
+                {"data":res.nlu}
+            ]
+        })
+    })
+
+    window.addEventListener('resize',mychart.resize);
+    window.addEventListener('resize',myChart2.resize);
+
+    $('#btn').on('click',function() {
+        if(($(".startTime").val() > $(".endTime").val()) || ($(".startTime").val().length === 0)|| ($(".endTime").val().length === 0 ) ) {
+            return false;
+        }
+        $.post(reqObj.ajax1,{startTime:$(".startTime").val(), endTime: $(".endTime").val() }).done(function(res) {
+            mychart.setOption({
+                "xAxis": [{
+                    "data": res.xdata
+                }],
+                "series": [
+                    {"data":res.nlu}
+                ]
+            });
+            myChart2.setOption({
+                "xAxis": [{
+                    "data": res.xdata
+                }],
+                "series": [
+                    {"data":res.nlu}
+                ]
+            })
+        })
+    })
+
+</script>
+</body>
+</html>

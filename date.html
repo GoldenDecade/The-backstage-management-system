@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.js"></script>
+    <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+</head>
+<body>
+<input type="text" class="startTime">
+<script>
+    $(".startTime").datetimepicker({
+        language: "zh-CN",
+        format: "yyyy-mm-dd",
+        autoclose: 1,
+        todayHighlight: 1,
+        todayBtn: "linked",
+        endDate: new Date(),
+//        viewSelect: "day",
+        minView: 2,
+//        minuteStep: 1
+    });
+</script>
+</body>
+</html>

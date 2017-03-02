@@ -1,0 +1,151 @@
+/**
+ * Created by xieyq on 2016/11/15.
+ */
+/**************************************************
+
+                datepicket
+
+****************************************************/
+.ui-datepicker {
+    box-sizing: border-box;
+    width: 260px;
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: #fff;
+}
+.ui-datepicker .ui-datepicker-header {
+    position: relative;
+    height: 2.5rem;
+    background-color: #1b8cf2;
+}
+/******************  prev  and  next *******************/
+.ui-datepicker .ui-datepicker-prev,
+.ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    top: 50%;
+    z-index: 999;
+    margin-top: -8px;
+    width: 16px;
+    height: 16px;
+    line-height: 0;
+    font-size: 0;
+    text-indent: -9999em;
+    background: url(../images/arrow.png) 0 0 no-repeat;
+}
+.ui-datepicker .ui-datepicker-prev {
+    left: 0.3125rem;
+    background-position: 0 0;
+}
+.ui-datepicker .ui-datepicker-next {
+    right: 0.3125rem;
+    background-position: right 0;
+}
+/******************  datepicker-title *******************/
+.ui-datepicker .ui-datepicker-title {
+    padding-top: 5px;
+    color: #fff;
+    font-size: 16px;
+    font-family: "Microsoft YaHei";
+    line-height: 1.9375rem;
+    text-align: center;
+}
+/*** 年份、月份的展现样式 ***/
+.ui-datepicker .ui-datepicker-year,
+.ui-datepicker .ui-datepicker-month {
+    margin: 0 6px;
+}
+/******************  select  date *******************/
+.ui-datepicker .ui-datepicker-title select {
+    margin: 0 5px;
+    width: 65px;
+    background-color: #fff;
+    border: none;
+    border: 0;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.9375rem;
+    font-family: "Microsoft YaHei";
+}
+.ui-datepicker .ui-datepicker-title option {
+    border: none;
+}
+/******************    calendar *******************/
+.ui-datepicker .ui-datepicker-calendar {
+    width: 100%;
+}
+.ui-datepicker .ui-datepicker-calendar th,
+.ui-datepicker .ui-datepicker-calendar td {
+    text-align: center;
+    border: 1px solid #e2e2e2;
+}
+.ui-datepicker .ui-datepicker-calendar th {
+    height: 1.9375rem;
+    color: #687179;
+    font: 12px "microsoft yahei";
+    background-color: #f4f6f9;
+}
+.ui-datepicker .ui-datepicker-calendar th span {
+    color: #687179;
+    font-size: 0.875rem;
+    line-height: 1.9375rem;
+    font-family: "Microsoft YaHei";
+}
+/*.ui-datepicker .ui-datepicker-calendar tr:nth-child(2n) td {
+    background-color: #1a3558;
+}*/
+.ui-datepicker .ui-datepicker-calendar td {
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.9375rem;
+    font-family: "Microsoft YaHei";
+}
+.ui-datepicker .ui-datepicker-calendar .ui-datepicker-unselectable span {
+    color: #808080;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-state-default {
+    display: block;
+    color: #4d5155;
+    poniter: default;
+}
+/*** 不可点的span的样式 ***/
+.ui-datepicker .ui-datepicker-calendar td.ui-state-disabled .ui-state-default {
+    opacity: 0.5;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-state-default {
+    display: block;
+    color: #4d5155;
+    cursor: default;
+}
+/*** 不可点的日期没有hover样式 ***/
+.ui-datepicker .ui-datepicker-calendar td:not(.ui-state-disabled) .ui-state-default:hover {
+    text-decoration: none;
+    color: #000;
+    background-color: #f0f0f0;
+}
+/* .ui-datepicker  .ui-datepicker-calendar .ui-state-default:hover {
+        text-decoration:none;
+    }    */
+/* .ui-datepicker  .ui-datepicker-calendar .ui-state-hover{
+        background-color:#0171e4;
+    }    */
+/*** 选中的日期 ***/
+.ui-datepicker .ui-datepicker-calendar .ui-state-active {
+    color: #fff;
+    background-color: #0490f2;
+}
+/********************* yellow **********************/
+/* .ui-datepicker_yellow.ui-datepicker  .ui-datepicker-calendar .ui-state-hover{
+        background-color:#f88c00;
+    } */
+.ui-datepicker_yellow.ui-datepicker .ui-datepicker-calendar .ui-state-active,
+.ui-datepicker_yellow.ui-datepicker .ui-datepicker-calendar .ui-state-highlight {
+    background-color: #f88c00;
+}
+/********************* green **********************/
+/* .ui-datepicker_green.ui-datepicker  .ui-datepicker-calendar .ui-state-hover{
+        background-color:#01ada7;
+    } */
+.ui-datepicker_green.ui-datepicker .ui-datepicker-calendar .ui-state-active,
+.ui-datepicker_green.ui-datepicker .ui-datepicker-calendar .ui-state-highlight {
+    background-color: #01ada7;
+}

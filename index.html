@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Lenovo Smart Home - Operation </title>
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrapValidator.min.css">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+
+    <style>
+        body {
+            font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        }
+        .slimScrollDiv >* {
+            overflow: visible;
+        }
+        .navbar-setting {
+            float: right;
+            margin-right: -70px;
+            width: 30%;
+            text-align: center;
+            position: relative;
+        }
+
+        .login span {
+            font-size: 18px;
+            line-height: 50px;
+            color: #0a6aa1;
+        }
+        .login > i {
+            margin-left: 6px;
+            font-size: 12px;
+            line-height: 50px;
+        }
+        .detail {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 50px;
+            margin-left: -50px;
+            padding: 10px;
+            width: 100px;
+            background-color: #fff;
+            box-shadow:0 0 4px #ccc;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .detail a {
+            display:inline-block;
+            margin-bottom: 10px;
+            padding-right: 10px;
+        }
+
+        /*退出*/
+        .detail a:hover {
+            text-decoration: underline;
+            color: #0087ca;
+        }
+        .userModal, .settingModal {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #c0c0c0;
+            padding-top: 60px;
+            font-size: 16px;
+            /*z-index: 99999;*/
+        }
+        .userModalBox, .settingModalBox {
+            width: 60%;
+            height: 600px;
+            margin-bottom: 40px;
+            margin-left: 30%;
+            background-color: #fff;
+            border-radius: 20px;
+            overflow-x: hidden;
+
+        }
+        /*.content2{margin:20px 0 40px 40px; width:260px; height:600px; padding:10px; overflow:auto;height:600px;}*/
+        .page-header {
+            margin-left: 20px;
+        }
+        #wrapper .nav li  a.J_menuItem.currentChoosed,
+        #wrapper .nav li > a.currentChoosed {
+            /*background-color: #3fc434;*/
+            color: white;
+        }
+    </style>
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<div id="wrapper">
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs" style="font-size:20px;">
+                                    <img src="img/logo.png" style="max-width: 150px; max-height: 60px"/>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">Smart</div>
+                </li>
+                <!--<li class="hidden-folded padder m-t m-b-sm text-muted text-xs" >
+                    <span class="ng-scope" data-i18n="operation"></span>
+                </li>-->
+                <li class="choose">
+                    <a class="J_menuItem " href="index_v1.html">
+                        <i class="fa fa-dashboard"></i>
+                        <span class="nav-label" data-i18n="overview"></span>
+                    </a>
+                </li>
+                <!--Report-->
+                <li id="report" class="choose">
+                    <a href="#">
+                        <i class="fa fa fa-bar-chart-o"></i>
+                        <span class="nav-label" data-i18n="report"></span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem"  href="report_user.html" data-i18n="report_user"></a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="report_speaker.html" data-i18n="report_speaker"></a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="report_scenario.html" data-i18n="report_scenarios"></a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="report_nlu.html" data-i18n="report_nlu"></a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="report_device.html" data-i18n="report_device"></a>
+                        </li>
+                    </ul>
+
+
+                </li>
+                <!--Geography-->
+                <li id="geo" class="choose">
+                    <a href="#">
+                        <i class="fa fa fa-map-pin"></i>
+                        <span class="nav-label" data-i18n="geography"></span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="geography_echarts_china.html" data-i18n="geography_china"></a>
+                        </li>
+                        <li>
+                            <a class="J_menuItem" href="geography_echarts_global.html" data-i18n="geography_global"></a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header" style="float: left;width: 20%;">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-info " href="#">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+
+                <!--显示登录信息-->
+                <div class="navbar-setting" >
+                    <div class="login">
+                        <span><span data-i18n="welcome">&nbsp;</span> &nbsp;<span id="alias"></span>!</span><i class="glyphicon glyphicon-triangle-bottom"></i>
+
+                        <div class="detail">
+                            <!--个人中心来设置昵称  等等-->
+                           <a class="J_menuItem" href="user.html" data-i18n="userCenter" id="userCenter">个人中心</a> <i class="glyphicon glyphicon-user"></i>
+                            <!--设置刷新间隔等-->
+                            <a class="J_menuItem" href="setting.html" data-i18n="userSetting"  id="setting">用户设置</a><i class="glyphicon glyphicon-cog"></i>
+                            <a href="javascript: void(0)" data-i18n="logout">退出</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="row J_mainContent" id="content-main">
+            <iframe id="J_iframe" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+</div>
+
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/jquery.metisMenu.js"></script>
+<script src="js/jquery.slimscroll.min.js"></script>
+<script src="js/pace.min.js"></script>
+<script src="js/bootstrapValidator.min.js"></script>
+<script src="js/i18next-latest.js"></script>
+<!--<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>-->
+<!-- 自定义js -->
+<script src="js/smart.js?v=4.1.0"></script>
+
+<script>
+    var reqObj = {
+        ajax1: "data0.json"
+    }
+
+    function language(lg){
+        i18n.init({
+            lng: lg,
+            debug: true,
+            resGetPath: "./locales/__lng__/__ns__.json",
+            useCookie: false,
+            useLocalStorage: false
+        }, function () {
+            $("body").i18n();
+        });
+    }
+
+    $(function(){
+        $("a.J_menuItem").on("click", function() {
+            $(this).parent().siblings().children("a").removeClass("currentChoosed")
+            $(this).addClass("currentChoosed")
+        })
+        $(".choose > a").on("click", function() {
+            $(this).parent().siblings().find("a").removeClass("currentChoosed")
+            $(this).addClass("currentChoosed")
+        })
+
+
+
+//        welcome
+        $.post(reqObj.ajax1, function(res) {
+            $("#alias").html(res.alias);
+            nowUser=res.alias;
+
+            //设置中英文
+            $("#J_iframe").attr("data-language", res.language)
+            language( res.language);
+
+        })
+
+        //菜单点击
+        // J_iframe
+        $(".J_menuItem").on('click',function(){
+            var url = $(this).attr('href');
+            $("#J_iframe").attr('src',url);
+            return false;
+        });
+
+        //
+        $(".login").mouseenter(function() {
+
+            $(".detail").show()
+        })
+        $(".login").mouseleave(function() {
+            $(".detail").hide()
+        })
+
+    });
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <!--日历-->
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/datepicker.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+
+        p {
+            margin: 0;
+        }
+        .wrapper {
+            padding: 20px 4% 20px;
+        }
+        /*顶部面板*/
+        .today {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .panel {
+            position: relative;
+            box-sizing: border-box;
+            padding: 12px 8px 8px 8px;
+            width: 260px;
+            height: 166px;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .name {
+            font-size: 28px;
+        }
+        .txtLeft {
+            text-align: left;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .info {
+            font-size: 32px;
+            line-height: 54px;
+        }
+        .more {
+            position: absolute;
+            right: 8px;
+            bottom: 10px;
+            font-size: 18px;
+            text-align: right;
+        }
+        .bold {
+            font-weight: bold;
+        }
+
+
+        /*颜色设置*/
+        .user {
+            background-color:#ff6e59;
+        }
+        .speaker {
+            background-color: #7266ba;
+        }
+        .nlu {
+            background-color: #23b7e5;
+        }
+        .hub {
+            background-color:rgba(0,191,183,1)
+        }
+        /*动态图*/
+        #moving {
+            float: left;
+            margin-top: 20px;
+            width: 93%;
+            height: 280px;
+            margin-left: 3.5%;
+        }
+
+        /*底部*/
+        #box {
+            display: flex;
+            width: 100%;
+            margin-top: 30px;
+        }
+        #three {
+            height: 480px;
+        }
+        #userLeft {
+            width: 400px;
+            height: 330px;
+
+        }
+        #userRight {
+            flex: 1;
+            height: 330px;
+        }
+        .box1 {
+            margin-top: 30px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+        }
+        .box2 {
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+        }
+
+        /*#btn {
+            padding: 7px;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #23b7e5;
+            outline: 0 none;
+            border: 0 none;
+            transition: all 0.5s;
+        }
+        #btn:hover {
+            background-color: #7266ba;
+        }*/
+        .today {
+            cursor: default;
+        }
+        span.routes {
+            cursor: pointer;
+        }
+
+        /*清除动态图浮动*/
+        .changeData {
+            font-size: 20px;
+            line-height: 30px;
+            width: 90px;
+            height: 44px;
+            line-height: 44px;
+            margin-left:-30px;
+            margin-top: -260px;
+            text-align: center;
+            color: #fff;
+            border-radius: 30px;
+            background-color: #23b7e5;
+        }
+        /*.clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+        .clearfix {
+            *zoom:1;
+        }*/
+        /*左侧数显示据变化区域*/
+        .leftBox {
+            float: right;
+            vertical-align: top;
+            width: 8%;
+        }
+        .time {
+            margin: 0 4%;
+            padding: 10px 0;
+        }
+        .time span {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 22px;
+            color:#2196f3;
+        }
+        .time button{
+            margin-left: 15px;
+            padding: 6px 12px;
+        }
+        .item {
+            margin-right: 80px;
+        }
+        .time label {
+            margin-right: 4px;
+            font-weight: 600;
+            font-size: 18px;
+            vertical-align: middle;
+            margin-bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrapper animated fadeInRight">
+    <!--顶部面板-->
+    <div class="today">
+        <div class="panel user">
+            <p class="name bold" data-i18n="v1_user"></p>
+            <p class=" txtLeft" data-i18n="v1_today">今日访问量：</p>
+            <p class="info bold user_info" style=" font-family:FZShuTi">5000/6568</p>
+            <p class="more"><span data-route="report_user.html" class="routes" data-i18n="v1_more">more detail...</span></p>
+        </div>
+        <div class="panel speaker">
+            <p class="name bold" data-i18n="v1_speaker">SPEAKER</p>
+            <p class=" txtLeft" data-i18n="v1_today">今日访问量：</p>
+            <p class="info bold speaker_info" style=" font-family:FZShuTi">5000/6568</p>
+            <p class="more"><span data-route="report_speaker.html" class="routes" data-i18n="v1_more">more detail...</span></p>
+        </div>
+        <div class="panel nlu">
+            <p class="name bold" data-i18n="v1_nlu">NLU</p>
+            <p class=" txtLeft" data-i18n="v1_today">今日访问量：</p>
+            <p class="info bold nlu_info" style=" font-family:FZShuTi">5000/6568</p>
+            <p class="more"><span data-route="report_nlu.html" class="routes" data-i18n="v1_more">more detail...</span></p>
+        </div>
+        <div class="panel hub">
+            <p class="name bold" data-i18n="v1_hub">HUB</p>
+            <p class=" txtLeft" data-i18n="v1_today">今日访问量：</p>
+            <p class="info bold hub_info" style=" font-family:FZShuTi">5000/6568</p>
+            <p class="more"><span data-route="report_user.html" class="routes" data-i18n="v1_more">more detail...</span></p>
+        </div>
+    </div>
+    <!--动态图-->
+    <!--选择刷新时间-->
+    <div class="box1">
+        <div style="height: 300px;">
+            <div id="moving"></div>
+        </div>
+        <div class="leftBox">
+            <!--显示变化数据-->
+            <div class="changeData"></div>
+        </div>
+
+
+    </div>
+
+    <!--三合一24小时内在线人数-->
+    <div class="box2">
+
+        <form class="time form-inline">
+            <div class="form-group item">
+                <label data-i18n="startTime" for="startTime"></label><input id="startTime"  type="text" readonly class="startTime form-control" >
+            </div>
+            <div class="form-group">
+                <label data-i18n="endTime" for="endTime"></label><input id="endTime"  type="text" readonly class="endTime form-control" >
+            </div>
+            <button class="btn btn-primary" id="btn" data-i18n="search">查询</button>
+        </form>
+
+        <!--<div class="time">
+
+            <label>
+                <span data-i18n="startTime"></span>
+                <input type="text" class="form-control" readonly  id="startTime" >
+            </label>
+
+
+            <label>
+                <span data-i18n="endTime"></span>
+                <input type="text" id="endTime" readonly  class="form-control">
+            </label>
+            <button  type="button" id="btn" class="btn btn-primary" data-i18n="search">查询</button>
+        </div>-->
+        <div id="three"></div>
+    </div>
+
+    <!--nlu24小时-->
+    <div id="box" style="margin-bottom: 70px">
+        <div id="userLeft" style="font-family: fantasy"></div>
+        <div id="userRight"></div>
+    </div>
+
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/echarts/echarts.js"></script>
+<script src="js/i18next-latest.js"></script>
+<!--日历-->
+<script src="js/jquery-uidate.js"></script>
+<script src="js/util.js"></script>
+<!--今日访问量-->
+<script>
+    var reqObj = {
+        ajax1: "data1.json",
+        ajax2: "data5.json",
+        ajax3: "setting.json",
+        ajax4: "data2.json",
+        ajax5: "nlu_index.json",
+        ajax6: "data.json"
+    }
+
+    //设置中英文以及图表的标题
+    var chartTitle = {}
+    if(lg === "zh") {
+        chartTitle = {
+            "moving": "服务器状态",
+            "chart2": "图表2",
+            "chart3": "NLU倾向图",
+            "chart4": "24小时状态图"
+        }
+    }else {
+        chartTitle = {
+            "moving": "Server Status",
+            "chart2": "Chart2",
+            "chart3": "NLU Tendency graph ",
+            "chart4": "24h State"
+        }
+    }
+    $("#startTime").val(formatDate(new Date(),"yyyy-MM-dd"))
+    $("#endTime").val(formatDate(new Date(),"yyyy-MM-dd"))
+
+    //request    设置面板内信息
+    $.get(reqObj.ajax1).done(function(res) {
+        $(".user_info").html(res.userCurrent+'/'+res.userTotal)
+        $(".speaker_info").html(res.speakerCurrent+'/'+res.speakerTotal)
+        $(".nlu_info").html(res.nluCurrent+'/'+res.nluTotal)
+        $(".hub_info").html(res.hubCurrent+'/'+res.hubTotal)
+    })
+    //初始化日历
+    function initDate(callback) {
+        $.datepicker.regional['zh-CN'] = {
+            showButtonPanel: false,
+            closeText: '清空',
+            prevText: '<',
+            nextText: '>',
+            currentText: '今天',
+            monthNames: ['1月', '2月', '3月', '4月', '5月', '6月',
+                '7月', '8月', '9月', '10月', '11月', '12月'],
+            monthNamesShort: ['一月', '二月', '三月', '四月', '五月', '六月',
+                '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            dayNamesMin: ['日', '一', '二', '三', '四', '五', '六'],
+            weekHeader: '周',
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            stepMonths: 1,
+            minDate:'2016-01-01',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: true,
+            maxDate: new Date(),
+            yearSuffix: '年',
+            monthSuffix: '月',
+            onSelect:function(selectedDate) {	//选择日历日期发生的事件
+                //$scope.scope.parmes.kssj = selectedDate;
+                callback(selectedDate);
+            }
+        };
+        return $.datepicker.regional['zh-CN'];
+    };
+    function initParam() {
+        $('#startTime').datepicker(initDate(function(selectedDate){
+            console.log(selectedDate)
+        }));
+        $('#endTime').datepicker(initDate(function(selectedDate){
+            console.log(selectedDate)
+        }));
+    }
+    initParam()
+
+
+    <!--跳转-->
+    $('.today').on('click',"span.routes", function() {
+        var route = $(this).data().route;
+        $('iframe',window.parent.document).attr('src',route)
+    })
+    //    moviing动态图
+    $(function() {
+        var myChart1 = echarts.init(document.getElementById('moving'));
+        var option = {
+            title: {
+                text: chartTitle.moving,
+                x: 'center',
+                y: '20',
+                textStyle: {
+                    fontSize: 18,
+                    fontWeight: 'bolder',
+                    color: '#333'
+                }
+
+            },
+            grid: {
+                x: 50,
+                y: 80,
+                x2: 40,
+                y2: 40
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                "axisLine": {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                data: []
+            },
+            yAxis: {
+                "splitLine": {
+                    "show": true,   //是否显示网格
+                    lineStyle: {
+                        color: "#ddd"
+                    }
+                },
+                boundaryGap: false,
+                type: 'value',
+                "axisLine": {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                }
+
+            },
+            series: [
+                {
+                    name:'成交',
+                    type:'line',
+                    smooth:true,
+                    symbol: 'none',
+                    stack: 'a',
+                    itemStyle: {
+//                    顶部曲线
+                        normal: {
+                            color: "#23b7e5"
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: "#23b7e5"
+                            /*color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'red'
+                            }, {
+                                offset: 1,
+                                color: 'rgb(255, 70, 131)'
+                            }])*/
+                        }
+                    }
+
+                }
+            ]
+        };
+        //存储每一次数据的最后一个数值
+        var movingData =[];
+//request
+        //页面刚进入的时候进行请求一次
+        $.get(reqObj.ajax2).done(function(res) {
+            movingData.push(res[res.length -1])
+            myChart1.setOption({
+                xAxis: {
+                    data: []
+                },
+                series: [{
+                    data: res
+                }]
+            });
+        })
+
+        //随后不停地去请求
+        $.get(reqObj.ajax3).done(function(data) {
+            setInterval(function() {
+                $.get(reqObj.ajax2).done(function(res) {
+                    movingData.push(res[res.length -1])
+                    myChart1.setOption({
+                        xAxis: {
+                            data: []
+                        },
+                        series: [{
+                            data: res
+                        }]
+                    });
+                    //显示变化值    将每次数据的最后一个值存起来
+                    if(movingData[movingData.length -1] - movingData[movingData.length -2] !== 0) {
+                        $(".changeData").html("<div class='animated bounce'>"+(movingData[movingData.length -1] - movingData[movingData.length -2])+"</div>")
+                    }else {
+                        $(".changeData").html("<div>"+(movingData[movingData.length -1] - movingData[movingData.length -2])+"</div>")
+                    }
+
+                    if(movingData.length > 5) {
+                        movingData.splice(0,3)
+                    }
+                })
+            }, data.interval*1000)
+        })
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option);
+        window.addEventListener('resize', myChart1.resize)
+
+    })
+    //    chart2
+    $(function() {
+        var myChart2 = echarts.init(document.getElementById('three'));
+        var option = {
+//            backgroundColor: "#E3F9EC",
+            "title": {
+                "text": chartTitle.chart2,
+                x: "center",
+                y: "20",
+                textStyle: {
+                    color: '#333',
+                    fontSize: '22',
+                    fontFamily: "YouYuan "
+                }
+            },
+            "tooltip": {
+                "trigger": "axis",
+                "axisPointer": {
+                    "type": "line"
+                },
+                "textStyle": {
+                    "color": "#fff"
+                }
+            },
+            "grid": {
+                "borderWidth": 0,
+                "top": 110,
+                "bottom": 95,
+                left: 90,
+                textStyle: {
+                    color: "#fff"
+                }
+            },
+            "legend": {
+                x: '4%',
+                top: '11%',
+                textStyle: {
+                    color: '#90979c'
+                },
+                "data": ['user', 'hub', 'nlu']
+            },
+
+            "xAxis": [{
+                "type": "category",  //x轴样式
+                "axisLine": {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                "splitLine": {
+                    "show": false   //是否显示网格
+                },
+                "axisTick": {
+                    "show": false
+                },
+                "splitArea": {
+                    "show": false   //背景分区
+                },
+                "axisLabel": {
+                    "interval": 0   //显示每个折点的数字
+
+                }
+//                    "data": xData,
+            }],
+            "yAxis": [{
+                "type": "value",
+                "splitLine": {
+                    "show": true,
+                    lineStyle: {
+                        color: "#ddd"
+                    }
+                },
+                "axisLine": {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                "axisTick": {
+                    "show": false
+                },
+                "axisLabel": {
+                    "interval": 0
+
+                },
+                "splitArea": {
+                    "show": false
+                }
+
+            }],
+            "dataZoom": [   //滑动条
+                {
+                    "show": true,
+                    "height": 30,
+                    "xAxisIndex": [
+                        0
+                    ],
+                    bottom: 30,
+                    "start": 10,
+                    "end": 80,
+                    handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                    handleSize: '110%',
+                    handleStyle:{
+                        color:"#1BB193"
+
+                    },
+                    textStyle:{
+                        color:"black"},
+                    borderColor:"#90979c"
+                }, {
+                    "type": "inside",
+                    "show": true,
+                    "height": 15,
+                    "start": 1,
+                    "end": 35
+                }],
+            "series": [      //
+                {
+                    "name": "user",
+                    "type": "bar",
+                    "stack": "总量",
+                    "barMaxWidth": 35,
+                    "barGap": "10%",
+                    "itemStyle": {
+                        "normal": {
+                            "color": "#ff6e59",
+                            "label": {
+                                "show": true,
+                                "textStyle": {
+                                    "color": "#ff6e59"  //柱子的数字颜色
+                                },
+                                "position": "top",
+                                formatter: function(p) {
+                                    return p.value > 0 ? (p.value) : '';
+                                }
+                            }
+                        }
+                    }
+                    //"data": [709, 1917, 2455, 2610, 1719, 1433, 1544, 3285, 5208, 3372, 2484, 4078]
+                },
+                {
+                    "name": "hub",
+                    "type": "line",
+                    "stack": "总量",
+                    "itemStyle": {
+                        "normal": {
+                            "color": "rgba(0,191,183,1)",
+                            "barBorderRadius": 0,
+                            "label": {
+                                "show": true,
+                                "position": "top",
+                                formatter: function(p) {
+                                    return p.value > 0 ? (p.value) : '';
+                                }
+                            }
+                        }
+                    }
+                    //"data": [327, 1776, 507, 1200, 800, 482, 204, 1390, 1001, 951, 381, 220]
+                },
+                {
+                    "name": "nlu",
+                    "type": "line",
+                    "stack": "总量",
+//                    symbolSize:10,
+//                    symbol:'circle',
+                    "itemStyle": {
+                        "normal": {
+                            "color": "#2173EF",
+                            "barBorderRadius": 0,
+                            "label": {
+                                "show": true,
+                                "position": "top",
+                                formatter: function(p) {
+                                    return p.value > 0 ? (p.value) : '';
+                                }
+                            }
+                        }
+                    }
+//                    "data": [1036, 3693, 2962, 3810, 2519, 1915, 1748, 4675, 6209, 4323, 2865, 4298]
+                }
+            ]
+        }
+        // request
+        $.get(reqObj.ajax4).done(function(res) {
+            myChart2.setOption({
+                "xAxis": [{
+                    "data": res.xdata
+                }],
+                "series": [
+                    {"data":res.user},
+                    {"data":res.hub},
+                    {"data":res.nlu}
+                ]
+            })
+        })
+
+        myChart2.setOption(option);
+        window.addEventListener('resize',myChart2.resize)
+
+//        点击查询   request
+        $('#btn').on('click', function() {
+            var startTime = $("#startTime").val()
+            var endTime = $("#endTime").val()
+            //如果开始时间大于结束时间，就不发送请求
+            if(startTime > endTime) {
+                return false;
+            }
+            //request
+            $.post(reqObj.ajax4, {startTime:startTime,endTime: endTime}, function(res) {
+                myChart2.setOption({
+                    "xAxis": [{
+                        "data": res.xdata
+                    }],
+                    "series": [
+                        {"data":res.user},
+                        {"data":res.hub},
+                        {"data":res.nlu}
+                    ]
+                })
+            })
+        })
+    })
+    //    nlu24小时在线人数
+    // 左侧柱状图   横向柱子
+    $(function() {
+        var myChart = echarts.init(document.getElementById('userLeft'));
+        option = {
+            title: {
+                text: chartTitle.chart3,
+                x: 'center',
+                y: '20',
+                textStyle: {
+                    color: 'black',
+                    fontSize: '22',
+                    fontFamily: "YouYuan "
+                }
+
+            },
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                top: 70,
+                bottom: 10
+            },
+            xAxis: {
+                show: false
+            },
+
+            yAxis: {
+                type : 'category',
+                axisLine: {show: false},
+                axisLabel: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+//                纵轴数据
+//                data : ['ten', 'nine', 'eight', 'seven', 'one']
+            },
+            series : [
+                {
+                    name:'次数',
+                    type:'bar',
+//                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            formatter: '{b}',
+                            textStyle: {  //控制字体
+                                color: "#fff",
+                                fontSize: 16
+                            }
+                        }
+                    },
+                    itemStyle: { //设置图标内图形的默认样式和强调样式
+                        normal: {
+                            color: '#F79709' //柱子的颜色
+                        }
+                    }
+//                    横轴数据
+//                    data:[0.2, 0.5, 0.6, 0.4, 0.7]
+                }
+            ]
+        };
+// request
+        $.get(reqObj.ajax5).done(function(res) {
+            myChart.setOption({
+                yAxis: {
+                    data: res.num
+                },
+                series : [
+                    {
+                        data:res.val
+                    }
+                ]
+            });
+        })
+
+        myChart.setOption(option);
+        window.addEventListener('resize', myChart.resize)
+    })
+    //    右侧24小时柱状图
+    $(function() {
+        var myChart = echarts.init(document.getElementById('userRight'));
+
+//        request
+        $.get(reqObj.ajax6).done(function(res) {
+            var option = {
+                title: {
+                    text: chartTitle.chart4,
+                    x: "center",
+                    top: "20",
+                    textStyle:{
+                        fontFamily: "YouYuan "
+                    }
+                },
+                grid: {
+                    top: 70,
+                    bottom: 20
+                },
+
+                xAxis: {
+                    data: res.dataAxis,
+                    axisLabel: {
+                        textStyle: {
+                            color: "#000"
+                        }
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#000"
+                        }
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: true
+                    },
+                    axisTick: {
+                        show: true
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#000"
+                        }
+                    }
+                },
+
+                series: [
+                    {
+                        type: 'bar',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    color: "#d31c6b",
+                                    //fontStyle: "oblique",
+                                    //fontWeight: "bolder",
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                           // {offset: 0, color: '#83bff6'},
+                                          //  {offset: 0.5, color: '#188df0'},
+                                            {offset: 1, color: '#188df0'}
+                                        ]
+                                )
+                            },
+                            emphasis: {
+                                color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 0, color: '#2378f7'},
+                                            {offset: 0.7, color: '#2378f7'},
+                                            {offset: 1, color: '#83bff6'}
+                                        ]
+                                )
+                            }
+                        },
+                        data: res.val
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+            window.addEventListener('resize', myChart.resize)
+        })
+
+
+    })
+
+
+</script>
+
+</body>
+</html>
